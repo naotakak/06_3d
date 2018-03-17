@@ -105,7 +105,25 @@ void parse_file ( char * filename,
 	     xvals, yvals, zvals, &r);
       add_circle( edges, xvals[0], yvals[0], zvals[0], r, step);
     }//end of circle
-
+    else if ( strncmp(line, "box", strlen(line)) == 0) {
+      fgets(line, sizeof(line), f);
+      sscanf(line, "%lf %lf %lf %lf %lf %lf",
+	     xvals, yvals, zvals, xvals + 1, yvals + 1, zvals + 1);
+      add_box(edges, xvals[0], yvals[0], zvals[0], xvals[1], yvals[1], zvals[1]);
+    }
+    else if ( strncmp(line, "sphere", strlen(line)) == 0) {
+      fgets(line, sizeof(line), f);
+      sscanf(line, "%lf %lf %lf %lf", xvals, yvals, zvals, &r);
+      add_sphere(edges, xvals[0], yvals[0], zvals[0], r, step);
+    }
+    else if ( strncmp(line, "torus", strlen(line)) == 0) {
+      fgets(line, sizeof(line), f);
+      sscanf(line, "%lf %lf %lf %lf %lf", xvals, yvals, zvals, &r, &theta);
+      add_torus(edges, xvals[0], yvals[0], zvals[0], r, theta, step);
+    }
+    else if ( strncmp(line, "clear", strlen(line)) == 0) {
+      edges = new_matrix(4, 4);
+    }
     else if ( strncmp(line, "hermite", strlen(line)) == 0 ||
 	      strncmp(line, "bezier", strlen(line)) == 0 ) {
       if (strncmp(line, "hermite", strlen(line)) == 0 )
